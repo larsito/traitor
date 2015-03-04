@@ -10,6 +10,12 @@ sampleSpecies(com, avail_sp, thresh = 0.8, sequential = TRUE)
 \item{com}{a matrix containing the community data, with species as columns
 and plots (samples) as rows.}
 
+\item{avail_sp}{a binary vector of 0 and 1, either named with the same
+species as in \code{com} or with the same number and order of species as in
+\code{com}. 0 indicates that no trait data is available for a species.
+Alternatively, a categorical or numeric vector of trait values but
+conainting NAs, where NA indicates species with missing trait data.}
+
 \item{thresh}{a threshold value defining the minimum amount of relative
 abundance that trait data should be available for.}
 
@@ -17,12 +23,6 @@ abundance that trait data should be available for.}
 by Scenario 1 and any species to be sampled in addition are determined by
 Scenario 2. When \code{FALSE}, Scenario 2 gives the species to be sampled
 in each plot to reach the threshold in each plot. See also details.}
-
-\item{avail.sp}{a binary vector, either named or with the same number and
-order of species as in \code{com} where 0 indicates that no trait data is
-available for a species. Alternatively, a categorical or numeric vector of
-trait values but conainting NAs, where NA indicates species with missing
-trait data.}
 }
 \value{
 a list with two or more elements, depending on the input data and
@@ -62,30 +62,31 @@ There are two different ways in which the species to be sampled are
   account trait variation on the between-plot level, or even intraspecific
   level when several individual per species are measured per plot.
 
-  All these exmaples discussed so far assume that species in the community
+  All these examples discussed so far assume that species in the community
   data are represented by some sort of (semi)quantitative abundance measure
   (e.g. cover values, individual counts, biomass). Note that Scenario 2 can
   not be calculated when the community data is presence-absence only.
 
   \code{sampleSpecies} returns a list with three elements: \describe{
   \item{\code{$Original}}{Parameters of the original community data}
-  \item{\code{$Scenario1}}{Parameters of the community data after applying Scenario
-  1} \item{\code{$Scenario2}}{Parameters of the community data after applying
-  Scenario 2} } Each of these objects is itself a list, containing four
-  objects, except for \code{$Original}, which only contains the latter three
-  objects: \describe{\item{\code{$sample_species}}{The species to be sampled to
-  reach the threshold. When \code{sequential} is \code{TRUE}, this gives a
-  single vector of species to be sampled for both Scenario 1 and 2, with the
-  vector under Scenario 2 given the species to be sampled in addition to
-  these under Scenario 1. When \code{sequential} is \code{FALSE}, this gives
-  a list of vectors of species to be sampled, where each vector contains the
-  species to be sampled in a given plot. \code{NULL} implies that the abundance
-  threshold is being reached without sampling any (further) species than the
-  ones that already have trait data available.} \item{\code{$com_available}}{The
-  species available in the community data. If "NA", this species is not
-  available.} \item{\code{$available_pool}}{The total proportional abundance
-  available on the overall (pooled) community level.} \item{\code{$available_plot}}{The total
-  proportional abundance available in each plot.} }
+  \item{\code{$Scenario1}}{Parameters of the community data after applying
+  Scenario 1} \item{\code{$Scenario2}}{Parameters of the community data after
+  applying Scenario 2} } Each of these objects is itself a list, containing
+  four objects, except for \code{$Original}, which only contains the latter
+  three objects: \describe{\item{\code{$sample_species}}{The species to be
+  sampled to reach the threshold. When \code{sequential} is \code{TRUE}, this
+  gives a single vector of species to be sampled for both Scenario 1 and 2,
+  with the vector under Scenario 2 given the species to be sampled in
+  addition to these under Scenario 1. When \code{sequential} is \code{FALSE},
+  this gives a list of vectors of species to be sampled, where each vector
+  contains the species to be sampled in a given plot. \code{NULL} implies
+  that the abundance threshold is being reached without sampling any
+  (further) species than the ones that already have trait data available.}
+  \item{\code{$com_available}}{The species available in the community data.
+  If "NA", this species is not available.} \item{\code{$available_pool}}{The
+  total proportional abundance available on the overall (pooled) community
+  level.} \item{\code{$available_plot}}{The total proportional abundance
+  available in each plot.} }
 }
 \examples{
 # example community data and vector indicating trait availability for species

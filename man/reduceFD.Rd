@@ -48,10 +48,10 @@ The function returns a list of five elements, containing the
 }
 \examples{
 data(ohrazeni)
-w <- reduceFD(ohrazeni$community[, -49],
-     na.omit(ohrazeni$traits[, "ch", drop = F]),
+red <- reduceFD(ohrazeni$vegetationdata,
+     ohrazeni$traitdata[, "height", drop = F],
      reduction = 0.1, remain = 0.7)
-plot_reduceFD(w)
+plot_reduceFD(red, index = "Rao")
 }
 \references{
 Majekova, Maria; et al. Evaluating functional diversity: missing

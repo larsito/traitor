@@ -8,32 +8,6 @@
 \description{
 The traitor package provides two main functionalities.
 }
-\section{Reduce community data and calculate functional diversity indices}{
-
-  Given a community data set and trait data for the species in the community,
-  it calculates functional diversity indices for the original user-proivded
-  data, as well as for a set of reduced communities. The reduction of the
-  communities happens in a step-wise manner, first ordering the species by
-  their relative abundances, and then omiting species from the communities by
-  substracting predefined amounts of relative abundance (e.g. 5\% per step)
-  until a user-set remaining total abundance is reached (e.g. 80\%). This
-  reduction procedure can be obtained according to two different scenarios.
-  Either, the procedure is applied to each plot (sample) of a community,
-  resulting in different species being removed from the different plots.
-  Alternatively, the procedure is applied to the pooled abundances of the
-  community, so that the removal of species from the plots is based on the
-  species abundance across all the plots in the community. Hence, the same
-  species are removed from all plots. This results in different remaning
-  abundances per plot. In addition to the raw functional diversity indices
-  being caclulated, the function also calculates rank correlation between the
-  indices of the original community data and each of the reduced communities.
-
-  With the \code{plot_reduceFD} function the rank correlations calculated by
-  \code{reduceFD} can be plotet, showing the decrease in correlation between
-  reduced and original functional diversity indices with increasing amounts
-  of abundance removed from the community.
-}
-
 \section{Define species to sample for trait measurement}{
  When community data
   is available, but not for all species in the community trait data is
@@ -44,5 +18,54 @@ The traitor package provides two main functionalities.
   abundance he wants to obtain trait data for (e.g. for 80\% of the biomass
   of species) and species to be sampled to meet this requirement are either
   defined on the plot-wise or pool-wise scenario.
+}
+
+\section{Reduce community data and calculate functional diversity indices}{
+
+  Here, reducing community data means that species are artifically removed
+  from the data to demonstrate the effect of species with missing trait data
+  on measures of functional diversity. Unlike \code{link{smapleSpecies}},
+  this is not so much a practical tool for sampling campaigns, but providing
+  a tool to investigate the issue of missing trait data on theoretical
+  grounds. Generally, the function allows to conduct analyses with invidual
+  data sets in the way that has been done by Pakeman and Quested (2007),
+  Pakeman (2014), and Majekova et al. (unpublished).
+
+  Given a set of community data and trait data for the species in the
+  community data, \code{link{reduceFD}} calculates functional diversity
+  indices for the original user-proivded data, as well as for a set of
+  reduced data. The reduction of the communities happens in a step-wise
+  manner, first ordering the species by their relative abundances, and then
+  omiting species from the communities by substracting predefined amounts of
+  relative abundance (e.g. 5\% per step) until a user-set remaining total
+  abundance is reached (e.g. 80\%). This reduction procedure can be obtained
+  according to two different scenarios. Either, the procedure is applied to
+  each plot (sample) of a community, resulting in different species being
+  removed from the different plots. Alternatively, the procedure is applied
+  to the pooled abundances of the community data, so that the removal of
+  species from the plots is based on the species abundance across all the
+  plots in the community data. Hence, the same species are removed from all
+  plots. This results in different remaning abundances per plot. In addition
+  to the raw functional diversity indices being caclulated, the function also
+  calculates rank correlations between the indices of the original community
+  data and each of the reduced communities.
+
+  With the \code{plot_reduceFD} function the rank correlations calculated by
+  \code{reduceFD} can be plotet, showing the decrease in correlation between
+  reduced and original functional diversity indices with increasing amounts
+  of abundance removed from the community.
+}
+\references{
+Pakeman, R. J. and Quested H. M. (2007) Sampling plant
+  functional traits: What proportion of the species need to be measured?
+  Applied Vegetation Science 10, 91-96.
+
+  Pakeman, R. J. (2013) Functional trait metrics are sensitive to the
+  completeness of the species' trait data? Methods in Ecology and Evolution
+  5, 9-15.
+
+  Majekova, M. et al. Evaluating functional diversity: missing
+  trait data and the importance of species abundance structure and data
+  transformation. Unpublished.
 }
 

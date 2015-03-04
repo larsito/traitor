@@ -1,39 +1,38 @@
 #' traitor: Tools For Functional Diversity Assessment With Missing Trait Data
 #' 
 #' The traitor package provides two main functionalities.
-#' 
-#' @section Reduce community data and calculate functional diversity indices: 
-#'   Given a community data set and trait data for the species in the community,
-#'   it calculates functional diversity indices for the original user-proivded 
-#'   data, as well as for a set of reduced communities. The reduction of the 
-#'   communities happens in a step-wise manner, first ordering the species by 
-#'   their relative abundances, and then omiting species from the communities by
-#'   substracting predefined amounts of relative abundance (e.g. 5\% per step) 
-#'   until a user-set remaining total abundance is reached (e.g. 80\%). This 
-#'   reduction procedure can be obtained according to two different scenarios. 
-#'   Either, the procedure is applied to each plot (sample) of a community, 
-#'   resulting in different species being removed from the different plots. 
-#'   Alternatively, the procedure is applied to the pooled abundances of the 
-#'   community, so that the removal of species from the plots is based on the 
-#'   species abundance across all the plots in the community. Hence, the same 
-#'   species are removed from all plots. This results in different remaning 
-#'   abundances per plot. In addition to the raw functional diversity indices 
-#'   being caclulated, the function also calculates rank correlation between the
-#'   indices of the original community data and each of the reduced communities.
+#' @section Evaluation of trait data availability for community data: In studies
+#'   of trait based community ecology, researchers often face the problem that 
+#'   they have a set of community data but do not have trait data for all 
+#'   species. The \code{link{sampleSpecies}} function helps to assess how much 
+#'   trait information is available for the community data and suggests which 
+#'   species should be sampled to attain a more complete set of trait data.
+#' @section Evaluation of sensitivity of functional diversity indices to missing
+#'   trait data: \code{link{sampleSpecies}} artificially removes species from
+#'   the community data to demonstrate the effect of species with missing trait
+#'   data on measures of functional diversity. Unlike
+#'   \code{link{sampleSpecies}}, this is not so much a practical tool for
+#'   sampling campaigns, but providing a tool to investigate the issue of
+#'   missing trait data on theoretical grounds. Generally, the function allows
+#'   to analyse individual data sets as in Pakeman and Quested (2007), Pakeman
+#'   (2014), and Majekova et al. (unpublished). With the \code{plot_reduceFD}
+#'   function the results of such analyses can be visualized. The generated
+#'   plots show the decrease in correlation between reduced and original
+#'   functional diversity indices with increasing amounts of species removed
+#'   from the community.
 #'   
-#'   With the \code{plot_reduceFD} function the rank correlations calculated by
-#'   \code{reduceFD} can be plotet, showing the decrease in correlation between
-#'   reduced and original functional diversity indices with increasing amounts
-#'   of abundance removed from the community.
-#' @section Define species to sample for trait measurement: When community data 
-#'   is available, but not for all species in the community trait data is 
-#'   available, the \code{link{smapleSpecies}} function helps to delimit the 
-#'   species for which trait data should be sampled in order to cover a set 
-#'   threshold of total abundance. This happens according to the scenarios 
-#'   described above, i.e. the user defines a minimum amount of total relative 
-#'   abundance he wants to obtain trait data for (e.g. for 80\% of the biomass 
-#'   of species) and species to be sampled to meet this requirement are either 
-#'   defined on the plot-wise or pool-wise scenario.
+#' @references Pakeman, R. J. and Quested, H. M. (2007) Sampling plant 
+#'   functional traits: What proportion of the species need to be measured? 
+#'   Applied Vegetation Science 10, 91-96.
+#'   
+#'   Pakeman, R. J. (2013) Functional trait metrics are sensitive to the 
+#'   completeness of the species' trait data? Methods in Ecology and Evolution 
+#'   5, 9-15.
+#'   
+#'   Majekova, M., et al. Evaluating functional diversity: missing trait data and
+#'   the importance of species abundance structure and data transformation. 
+#'   Unpublished.
+#'   
 #' @docType package
 #' @name traitor
 NULL

@@ -4,7 +4,7 @@
 #' original and reduced community data, as calculated by the
 #' \code{\link{reduceFD}} function.
 #' @param reduced object created by \code{\link{reduceFD}}.
-#' @param index one of the indices calculated by \code{\link{reduceFD}}
+#' @param index one of the indices calculated by \code{\link{reduceFD}}.
 #' @return A plot of decaying rank correlation with one line for each of the two
 #'   reduction Scenarios. Only one plot for one functional diversity index is 
 #'   produced at a time.

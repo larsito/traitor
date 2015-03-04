@@ -3,24 +3,43 @@
 #' \code{reduceFD} uses \code{\link[FD]{dbFD}} to calculate functional diversity
 #' indices for original and reduced community data for two different scenarios 
 #' (pool-wise and plot-wise). Also, rank correlations between the FD indices of 
-#' original and reduced data are calculated (Majekova et al., unpubl.).
+#' original and reduced data are calculated (Majekova et al., unpublished).
 #' @param com a matrix containing the community data, with species as columns 
 #'   and plots (samples) as rows.
 #' @param traits a vector, data frame or matrix containing trait values for the 
 #'   species in \code{com}.
 #' @param reduction the relative abundance removed in each reduction step.
 #' @param remain the amount of total relative abundance retained in the 
-#'   community. Gives an error if this value would lead to plots having less 
+#'   community. Throws an error if this value would lead to plots having less 
 #'   than two species.
 #' @return A list with five elements. See details.
-#' @details The function returns a list of five elements, containing the 
-#'   following objects: \describe{\item{\code{$rem_seq}}{A vector containing the 
-#'   sequence of reduction steps used to calculate functional diversities. The 
-#'   last (smallest) value in this vector is equal to \code{remain}.} 
-#'   \item{\code{$FD_reduced_scenario1}}{This object contains a list of the same 
+#' @details Given a set of community data and trait data for the species in the 
+#'   community data, \code{link{reduceFD}} calculates functional diversity 
+#'   indices for the original user-provided data, as well as for a set of 
+#'   reduced data. The reduction of the communities happens in a step-wise 
+#'   manner, first ordering the species by their relative abundances, and then 
+#'   omitting species from the communities by subtracting predefined amounts of 
+#'   relative abundance (e.g. 5\% per step) until a user-set remaining total 
+#'   abundance is reached (e.g. 80\%). This reduction procedure can be obtained 
+#'   according to two different scenarios. Either, the procedure is applied to 
+#'   each plot (sample) of a community, resulting in different species being 
+#'   removed from the different plots. Alternatively, the procedure is applied 
+#'   to the pooled abundances of the community data, so that the removal of 
+#'   species from the plots is based on the species abundance across all the 
+#'   plots in the community data. Hence, the same species are removed from all 
+#'   plots. This results in different remaining abundances per plot. In addition
+#'   to the calculation of raw functional diversity indices, the function also 
+#'   calculates rank correlations between the indices of the original community 
+#'   data and each of the reduced communities.
+#'   
+#'   The function returns a list of five elements, containing the following
+#'   objects: \describe{\item{\code{$rem_seq}}{A vector containing the sequence
+#'   of reduction steps used to calculate functional diversities. The last
+#'   (smallest) value in this vector is equal to \code{remain}.} 
+#'   \item{\code{$FD_reduced_scenario1}}{This object contains a list of the same
 #'   length as \code{$rem_seq}, where each element contains the functional 
 #'   diversity indices for each of the reduction 
-#'   steps.}\item{\code{$FD_reduced_scenario1}}{The same as the previous object, 
+#'   steps.}\item{\code{$FD_reduced_scenario2}}{The same as the previous object,
 #'   but for Scenario 2}\item{\code{$rank_cor_scenario1}}{The rank correlations 
 #'   between the functional diversity indices of each of the reduction steps 
 #'   (for Scenario 1) and the functional diversity indices of the original data.
@@ -30,17 +49,19 @@
 #'   (samples).}\item{\code{$rank_cor_scenario2}}{The same as the previous 
 #'   object, but for Scenario 2.}}
 #' @seealso \code{\link[FD]{dbFD}} for details on functional diversity 
-#'   calculation, \code{\link{plot.reduceFD}} for a graphical visualisation of 
-#'   the output of reduceFD.
-#' @references Majekova, Maria; et al. Evaluating functional diversity: missing 
+#'   calculation, \code{\link{plot.reduceFD}} for plotting the output of
+#'   reduceFD.
+#' @references Majekova, M., et al. Evaluating functional diversity: missing 
 #'   trait data and the importance of species abundance structure and data 
 #'   transformation. Unpublished.
 #' @examples
+#' # run reduceFD with the ohrazeni data set using the trait "height"
 #' data(ohrazeni)
-#' w <- reduceFD(ohrazeni$community[, -49], 
-#'      na.omit(ohrazeni$traits[, "ch", drop = F]), 
-#'      reduction = 0.1, remain = 0.7)   
-#' plot_reduceFD(w)
+#' red <- reduceFD(ohrazeni$vegetationdata, 
+#'      ohrazeni$traitdata[, "height", drop = F], 
+#'      reduction = 0.05, remain = 0.5)
+#' # plot the object created by reduceFD         
+#' plot_reduceFD(red, index = "Rao")
 #' @export
 reduceFD <- function(com, traits, reduction = 0.05, remain = 0.5) {
   if(any(colnames(com) != rownames(traits))) {

@@ -5,11 +5,12 @@ Version: 0.0.0.9000
 Date: 2015-02-23
 Authors@R: person("Lars", "Götzenberger", email = "lars.goetzenberger@gmail.com",
   role = c("aut", "cre"))
-Description: This packages has two main functionalities (as of version 0.0.0.9000). 
-    First, it can demonstrate how different functional diversity indices loose 
-    their information as trait data is available for less and less species in a 
-    community. Second, it helps you to identify species that you need to sample,
-    given a minimum amount of species that you want to have trait data for.
+Description: This packages has two main functionalities (as of version 
+    0.0.0.9000). First, it evaluates the availability of trait data for a given 
+    community data set and suggests species that beed to be sampled in order to 
+    reach a user-defined threshold of data availability. Second, it can 
+    demonstrate how different functional diversity indices loose their accuracy
+    as trait data is available for less and less species in a community. 
 License: GPL-2
 Imports: FD (>= 1.0-12)
 LazyData: true
