@@ -1,7 +1,7 @@
 Package: traitor
 Type: Package
 Title: Tools For Functional Diversity Assessment With Missing Trait Data
-Version: 0.0.0.9000
+Version: 0.0.0.9001
 Date: 2015-02-23
 Authors@R: person("Lars", "Götzenberger", email = "lars.goetzenberger@gmail.com",
   role = c("aut", "cre"))
@@ -12,5 +12,5 @@ Description: This packages has two main functionalities (as of version
     demonstrate how different functional diversity indices loose their accuracy
     as trait data is available for less and less species in a community. 
 License: GPL-2
-Imports: FD (>= 1.0-12)
+Imports: FD (>= 1.0-12), plyr
 LazyData: true

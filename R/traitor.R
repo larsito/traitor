@@ -7,19 +7,18 @@
 #'   species. The \code{link{sampleSpecies}} function helps to assess how much 
 #'   trait information is available for the community data and suggests which 
 #'   species should be sampled to attain a more complete set of trait data.
-#' @section Evaluation of sensitivity of functional diversity indices to missing
-#'   trait data: \code{link{sampleSpecies}} artificially removes species from
-#'   the community data to demonstrate the effect of species with missing trait
-#'   data on measures of functional diversity. Unlike
-#'   \code{link{sampleSpecies}}, this is not so much a practical tool for
-#'   sampling campaigns, but providing a tool to investigate the issue of
-#'   missing trait data on theoretical grounds. Generally, the function allows
-#'   to analyse individual data sets as in Pakeman and Quested (2007), Pakeman
-#'   (2014), and Majekova et al. (unpublished). With the \code{plot_reduceFD}
-#'   function the results of such analyses can be visualized. The generated
-#'   plots show the decrease in correlation between reduced and original
-#'   functional diversity indices with increasing amounts of species removed
-#'   from the community.
+#' @section Evaluation of sensitivity of FD indices to missing trait data: 
+#'   \code{link{sampleSpecies}} artificially removes species from the community 
+#'   data to demonstrate the effect of species with missing trait data on 
+#'   measures of functional diversity. Unlike \code{link{sampleSpecies}}, this
+#'   is not so much a practical tool for sampling campaigns, but providing a
+#'   tool to investigate the issue of missing trait data on theoretical grounds.
+#'   Generally, the function allows to analyse individual data sets as in
+#'   Pakeman and Quested (2007), Pakeman (2014), and Majekova et al.
+#'   (unpublished). With the \code{plot_reduceFD} function the results of such
+#'   analyses can be visualized. The generated plots show the decrease in
+#'   correlation between reduced and original functional diversity indices with
+#'   increasing amounts of species removed from the community.
 #'   
 #' @references Pakeman, R. J. and Quested, H. M. (2007) Sampling plant 
 #'   functional traits: What proportion of the species need to be measured? 

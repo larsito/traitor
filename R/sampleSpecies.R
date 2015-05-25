@@ -97,7 +97,7 @@
 #' 
 #' # run with the ohrazeni wet meadow data set
 #' data(ohrazeni)
-#' sampleSpecies(ohrazeni$community, ohrazeni$traits[, 6, drop = FALSE], 0.95, sequential = FALSE)
+#' sampleSpecies(ohrazeni$vegetationdata, rbinom(61, 1, 0.5), 0.95, sequential = FALSE)
 #' 
 #' @export
 
@@ -115,17 +115,14 @@ sampleSpecies <- function(com, avail_sp, thresh = 0.8, sequential = TRUE) {
     names(avail_sp) <- colnames(com)
     warning("avail_sp is without names. Species are assumed to be in the same order as in community data.", call. = FALSE)
   }
-  com_av <- com[ , as.logical(avail_sp)]
-  #com_unav <- com[ , !as.logical(avail_sp)]  
+  com_av <- com[ , as.logical(avail_sp), drop = FALSE]
   relab_com <- com/rowSums(com)
-  relab_com_av <- relab_com[ , as.logical(avail_sp)]
-  #relab_com_unav <- relab_com[ , !as.logical(avail_sp)]
+  relab_com_av <- relab_com[ , as.logical(avail_sp), drop = FALSE]
   pool <- colSums(com)
   relab_pool <- pool/sum(pool)
   relab_pool_av <- relab_pool[as.logical(avail_sp)]
-  #relab_pool_unav <- relab_pool[!as.logical(avail_sp)]
   tot_pool_av <- sum(relab_pool_av)
-  tot_com_av <- rowSums(relab_com_av)
+  tot_com_av <- rowSums(as.matrix(relab_com_av))
   out$Original$com_available <- com_av
   out$Original$available_pool <- tot_pool_av 
   out$Original$available_plot <- tot_com_av
@@ -136,11 +133,11 @@ sampleSpecies <- function(com, avail_sp, thresh = 0.8, sequential = TRUE) {
   unavail_sp1 <- setdiff(colnames(com), avail_sp1)
   com_av1 <- com
   com_av1[, unavail_sp1] <- NA
-  relab_com_av1 <- relab_com[, avail_sp1]
+  relab_com_av1 <- relab_com[, avail_sp1, drop = FALSE]
   tot_pool_av1 <- sum(relab_pool[avail_sp1])
   tot_com_av1 <- rowSums(relab_com_av1)
   if (is.null(to_sample1)) to_sample1 <- "none"
-  out$Scenario1$sample_species <- to_sample1
+  out$Scenario1$sample_species <- sort(to_sample1)
   out$Scenario1$com_available <- com_av1
   out$Scenario1$available_pool <- tot_pool_av1
   out$Scenario1$available_plot <- tot_com_av1
@@ -150,8 +147,7 @@ sampleSpecies <- function(com, avail_sp, thresh = 0.8, sequential = TRUE) {
   if (matrix_is_01) {
     warning("\nScenario 2 cannot be computed as there is no ranking within a plot, species addition is based only on the frequency across all plots\n\n")
     out[[3]] <- NULL
-  } else {
-    
+  } else {   
     fill <- function(x, x_n, n_av, how = c("NA", "0")) {
       n_unav <- setdiff(x_n, n_av)
       n_unav_index <- match(n_unav, x_n)
@@ -161,33 +157,44 @@ sampleSpecies <- function(com, avail_sp, thresh = 0.8, sequential = TRUE) {
       return(update_x)
     }  
     if(sequential == TRUE){
-      avail_sp[to_sample1] <- 1
-    }
-    to_sample2 <- apply(relab_com, 1, sampler, avail_sp, thresh)
-    
-    if(is.null(to_sample2)) {
+      if(to_sample1[1] == "none") {
+        avail_sp <- avail_sp
+      } else{
+        avail_sp[to_sample1] <- 1        
+      }
+      com_av <- com[ , as.logical(avail_sp), drop = FALSE]
+    } 
+    to_sample2 <- alply(as.matrix(relab_com), 1, sampler, avail_sp, thresh)
+    attributes(to_sample2) <- NULL
+    if(all(unlist(lapply(to_sample2, is.null)))) {
       out$Scenario2 <- NULL
       warning("Threshold reached by Scenario 1 alone", call. = FALSE)
-    } else {  
-      to_sample2 <- as.list(to_sample2)
+    } else {
       com_av_spl <- split(com_av, 1:nrow(com_av))
+      #com_av_spl <- lapply(com_av_spl, function(x) x <- x[!is.na(x)])
       com_av_spl_names <- lapply(com_av_spl, function(x) names(x) <- colnames(com_av))
       av_names <- mapply(c, com_av_spl_names, to_sample2, SIMPLIFY = FALSE)
       com_av2 <- t(mapply(fill, split(com, 1:nrow(com)), list(colnames(com)), 
-                        av_names, MoreArgs = list(how = "NA")))
+                          av_names, MoreArgs = list(how = "NA")))
       storage.mode(com_av2) <- "numeric"
       dimnames(com_av2) <- dimnames(com)
       relab_com_av2 <- t(mapply(fill, split(relab_com, 1:nrow(com)), 
-                              list(colnames(com)), av_names, MoreArgs = list(how = "0")))
+                                list(colnames(com)), av_names, MoreArgs = list(how = "0")))
       dimnames(relab_com_av2) <- dimnames(com)
       storage.mode(relab_com_av2) <- "numeric"
       tot_pool_av2 <- sum(com_av2, na.rm = TRUE)/sum(com)
       tot_com_av2 <- rowSums(relab_com_av2)
-      if(sequential == TRUE) to_sample2 <- unique(unlist(to_sample2))
-      out$Scenario2$sample_species <- to_sample2 
+      to_sample2 <- lapply(to_sample2, function(x) {
+        if(is.null(x)) {
+          x = "none"
+        } else{
+          x = x
+        }
+      })
+      out$Scenario2$sample_species <- lapply(to_sample2, sort)
       out$Scenario2$com_available <- com_av2
       out$Scenario2$available_pool <- tot_pool_av2
-      out$Scenario2$available_plot <- tot_com_av2
+      out$Scenario2$available_plot <- tot_com_av2      
     }
   }
   return(out)
